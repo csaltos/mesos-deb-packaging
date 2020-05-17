@@ -107,8 +107,8 @@ function main {
 }
 
 function go {
-  patch_mesos
   if ! $prebuilt; then
+    patch_mesos
     build
   fi
   create_installation
