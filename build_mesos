@@ -145,14 +145,18 @@ function maybe_append_git_hash {
   fi
 }
 
-function patch_mesos {
+function patch_mesos {(
   if [[ ! -f "mesos.patched" ]]; then
-    for patch in "$this/patch/$version"/*.patch; do
-      patch -s -p1 < "$patch"
+    local patches=("$this/patch/$version"/*.patch)
+    for patch in $patches; do
+      if [[ -f "$patch" ]]; then
+        out "Applying mesos patch $patch ..."
+        patch -N -t -s -p1 < "$patch"
+      fi
     done
     touch "mesos.patched"
   fi
-}
+)}
 
 function checkout {
   local url=( $(url_split "$repo") )
